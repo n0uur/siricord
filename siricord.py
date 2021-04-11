@@ -4,16 +4,23 @@ import random
 import os
 from dotenv import load_dotenv
 
+import translators as ts
+
+import asyncio
+
 have_words = False
 words = []
 word_count = 0
 
 config = {}
 
+def translate(word):
+    return ts.google(word, 'auto', 'th')
+
 def changeStatus(word):
     print("[Log] Changing to :", word)
 
-    status = "Siri, one word : `%s`" % word.title()
+    status = "Siri, one word : `%s %s`" % (word.title(), translate(word))
 
     requests.patch(
         'https://discord.com/api/v8/users/@me/settings',
@@ -64,6 +71,8 @@ def main():
     changeStatus(randomWord())
     print("[Timer] NextChange is at ", end="")
     print(nextChange)
+
+    # text_inp = None
 
     while True:
 
